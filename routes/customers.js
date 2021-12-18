@@ -21,8 +21,15 @@ router.get('/:customerID', function(req, res, next) {
     include: [{
       model: models.Customers,
       as: "customer",
-      attributes: ["name"]
+      attributes: [
+        "name",
+        "lastName",
+        "state"
+      ]
     }],
+    where: {
+      customerID: Number(req.params.customerID)
+    },
     attributes: {
       exclude: ["updatedAt"]
     }
