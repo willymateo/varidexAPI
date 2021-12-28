@@ -16,4 +16,29 @@ router.get('/', function(req, res, next) {
     .catch(error => res.status(400).send(error))
 });
 
+router.get('/:customerID', function(req, res, next) {
+  models.Orders.findAll({
+    include: [{
+      model: models.Customers,
+      as: "customer",
+      attributes: [
+        "name",
+        "lastName",
+        "state"
+      ]
+    }],
+    where: {
+      customerID: Number(req.params.customerID)
+    },
+    attributes: {
+      exclude: ["updatedAt"]
+    }
+  })
+    .then(customers => {
+      res.send(customers)
+    })
+    .catch(error => res.status(400).send(error))
+});
+
+
 module.exports = router;
