@@ -1,5 +1,6 @@
 //Npm modules.
 var cookieParser = require('cookie-parser');
+var cookieSession = require('cookie-session');
 var express = require('express');
 var logger = require('morgan');
 const cors = require('cors');
@@ -15,9 +16,15 @@ var app = express();
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(cookieParser());
 app.use(logger('dev'));
 app.use(cors());
+app.use(cookieParser());
+app.use(cookieSession({
+name: 'session',
+keys: ['DAWM'],
+// Cookie Options
+maxAge: 24 * 60 * 60 * 1000 // 24 hours
+}));
 
 app.use('/', indexRouter);
 app.use('/products', productsRouter);
